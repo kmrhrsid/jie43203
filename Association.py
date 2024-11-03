@@ -154,3 +154,6 @@ plt.ylabel('Feature 2')
 plt.colorbar(label='Cluster')
 plt.grid(True)
 plt.show()
+
+
+st.pyplot(plt.gcf())
