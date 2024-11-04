@@ -129,3 +129,46 @@ plt.show()
 
 
 st.pyplot(plt.gcf())
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.svm import OneClassSVM
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# Generate synthetic data for clustering
+X, _ = make_blobs(n_samples=300, centers=4, cluster_std=0.60, random_state=0)
+
+# Fit One-Class SVM
+svm = OneClassSVM(kernel='rbf', gamma='scale', nu=0.1)
+svm.fit(X)
+
+# Predict outliers/anomalies
+y_pred = svm.predict(X)
+
+
+accuracy = accuracy_score(np.ones(len(X)), y_pred)
+precision = precision_score(np.ones(len(X)), y_pred)
+recall = recall_score(np.ones(len(X)), y_pred)
+f1 = f1_score(np.ones(len(X)), y_pred)
+
+print(f"Accuracy: {accuracy:.4f}")
+print(f"Precision: {precision:.4f}")
+print(f"Recall: {recall:.4f}")
+print(f"F1 Score: {f1:.4f}")
+
+# Plotting the results
+plt.figure(figsize=(8, 6))
+
+# Plot data points
+plt.scatter(X[:, 0], X[:, 1], c=y_pred, cmap='viridis', s=50, edgecolors='k')
+
+plt.title('One-Class SVM for Anomaly Detection')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.colorbar(label='Cluster')
+plt.grid(True)
+plt.show()
+
+
+st.pyplot(plt.gcf())
